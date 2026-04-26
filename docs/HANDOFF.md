@@ -17,12 +17,9 @@
 4. 已提供 SQLite 初始化脚本与 smoke test。
 
 ## 3. 校验命令与结果（本次实际执行）
-- `python -m py_compile src/fdc/db/models.py`：通过
 - `python -m py_compile src/fdc/db/session.py`：通过
-- `python -m py_compile src/fdc/db/init_db.py`：通过
-- `python -m py_compile scripts/init_sqlite.py`：通过
-- `python scripts/init_sqlite.py`：通过（输出 `SQLite initialized: sqlite:///data/fdc.sqlite3`）
-- `pytest`：通过（`1 passed`）
+- `python scripts/init_sqlite.py`：通过（输出 `SQLite initialized: sqlite:///.../data/fdc.sqlite3`）
+- `pytest`：通过（`3 passed`）
 
 ## 4. 未完成内容（按阶段边界刻意留空）
 - 持仓层（positions）
