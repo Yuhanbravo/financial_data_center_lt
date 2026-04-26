@@ -14,9 +14,10 @@
 3. SQLite 会话与初始化脚本
 4. schema smoke tests
 5. 文档与任务包落盘
+6. Phase 1A-2 / 1A-3 路标定义（样例 NAV 装载、校验、issue log、组合指标）
 
 ## 3. Out of Scope
-- 持仓层/交易层建模
+- 持仓层/交易层/标的层建模
 - 行情源接入与行情事实表
 - 外部系统联调（Wind/Oracle/PostgreSQL）
 - API 与前端
@@ -50,6 +51,10 @@
 - 更新 README / HANDOFF
 - 完成 Blueprint / Plan / Schema / Task Package
 
+### Task E：Phase 1A 后续路标（文档层）
+- Phase 1A-2：样例 NAV 装载 + 基础校验 + issue log 写入
+- Phase 1A-3：组合指标装载 + 批次闭环
+
 ## 6. 交付物
 - 可运行 SQLite 初始化脚本
 - 可通过 pytest 的最小测试
@@ -63,7 +68,11 @@
 4. Blueprint 与 Plan 清晰描述方向与路径
 5. Schema 文档与 SQLAlchemy 模型基本一致
 
-## 8. 下一阶段边界（Phase 1B）
-- 开始做最小数据装载链路（样例 CSV）
-- 引入基础数据校验规则并写入 issue log
-- 继续坚持“组合层优先，不扩展持仓/交易/行情联调”
+## 8. 下一阶段边界
+- **Phase 1A-2 / 1A-3（仍在 1A）**：
+  - 样例 NAV ingest（仅 sample 数据）
+  - 数据校验与 issue log 写入
+  - 组合级指标日表装载
+- **Phase 1B（下一阶段）**：
+  - 扩展到 holdings / positions / trades / instruments
+  - 不把组合层 ingest 任务挪到 1B

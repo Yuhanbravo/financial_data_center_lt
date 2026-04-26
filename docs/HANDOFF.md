@@ -14,11 +14,17 @@
    - `data_issue_log`
    - `nav_daily`
    - `portfolio_metric_daily`
-4. 已提供 SQLite 初始化脚本与 smoke test：
-   - `python scripts/init_sqlite.py`
-   - `pytest`
+4. 已提供 SQLite 初始化脚本与 smoke test。
 
-## 3. 未完成内容（按阶段边界刻意留空）
+## 3. 校验命令与结果（本次实际执行）
+- `python -m py_compile src/fdc/db/models.py`：通过
+- `python -m py_compile src/fdc/db/session.py`：通过
+- `python -m py_compile src/fdc/db/init_db.py`：通过
+- `python -m py_compile scripts/init_sqlite.py`：通过
+- `python scripts/init_sqlite.py`：通过（输出 `SQLite initialized: sqlite:///data/fdc.sqlite3`）
+- `pytest`：通过（`1 passed`）
+
+## 4. 未完成内容（按阶段边界刻意留空）
 - 持仓层（positions）
 - 交易层（trades）
 - 行情接入（Wind/第三方 API）
@@ -27,22 +33,23 @@
 - PostgreSQL 迁移脚本与部署流水线
 - 复杂指标计算/回测口径
 
-## 4. 明确边界（本阶段不做）
+## 5. 明确边界（本阶段不做）
 - 不接真实生产数据，不进行外部系统联调。
 - 不接 Wind / Oracle / PostgreSQL。
 - 不实现 API、前端。
 - 不扩展到组合穿透分析、风控引擎、多资产估值。
 
-## 5. 下一步推荐任务（优先级）
-1. **Phase 1A-2：数据写入样例与质量日志落盘**
-   - 新增最小 ingest demo（CSV -> staged -> SQLite）
+## 6. 下一步推荐任务（优先级）
+1. **Phase 1A-2：样例 NAV 装载 + 校验 + issue log 落盘**
+   - 新增最小 ingest demo（CSV -> staged -> SQLite，仅 sample 数据）
    - 为 `data_batch` 与 `data_issue_log` 建立可复用写入方法
-2. **Phase 1A-3：日频净值/指标装载流程**
-   - 构建 `nav_daily` 与 `portfolio_metric_daily` 的 upsert 策略
-3. **Phase 1A-4：迁移预备**
-   - 引入 Alembic（仅生成迁移脚手架，不切 PostgreSQL）
+2. **Phase 1A-3：组合级指标装载流程**
+   - 构建 `portfolio_metric_daily` 装载与校验
+   - 形成批次状态闭环（pending/success/failed）
+3. **Phase 1B：持仓/交易/标的层扩展**
+   - holdings / positions / trades / instruments 分层建模
 
-## 6. 接手提示
+## 7. 接手提示
 - 先阅读：
   1) `docs/blueprint/IMPLEMENTATION_BLUEPRINT.md`
   2) `docs/blueprint/PHASE1A_PLAN.md`
