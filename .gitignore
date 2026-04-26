@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# local sqlite artifacts
+data/*.sqlite3
