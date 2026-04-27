@@ -1,0 +1,4 @@
+portfolio_code,portfolio_name,base_ccy,inception_date,is_active
+PF_DEMO_A,Demo Growth Portfolio A,USD,2024-01-01,1
+PF_DEMO_B,Demo Balanced Portfolio B,USD,2024-06-01,1
+PF_DEMO_C,Demo Income Portfolio C,USD,2025-01-15,1
