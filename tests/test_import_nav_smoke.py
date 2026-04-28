@@ -84,3 +84,33 @@ def test_repeatable_import_updates_existing_unique_key(tmp_path):
         assert second.status == "success"
         assert session.scalar(select(func.count()).select_from(NavDaily)) == 4
         assert session.scalar(select(func.count()).select_from(DataBatch)) == 2
+
+
+def test_missing_required_columns_marks_batch_failed(tmp_path):
+    session_local = _session_for_tmp_db(tmp_path)
+    bad_csv = tmp_path / "nav_missing_columns.csv"
+    bad_csv.write_text(
+        "\n".join(
+            [
+                "portfolio_code,trade_date,nav_accum,daily_return",
+                "PF_ALPHA,2026-01-02,1.001,0.001",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with session_local() as session:
+        seed_portfolios(session, SAMPLE_DIR / "portfolio_sample.csv")
+        result = import_nav_csv(session, bad_csv, artifacts_dir=tmp_path / "artifacts")
+
+        assert result.status == "failed"
+        assert result.accepted_rows == 0
+        assert session.scalar(select(func.count()).select_from(NavDaily)) == 0
+
+        issue_count = session.scalar(
+            select(func.count())
+            .select_from(DataIssueLog)
+            .where(DataIssueLog.issue_type == "missing_required_columns")
+        )
+        assert issue_count == 1

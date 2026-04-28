@@ -4,3 +4,7 @@ __pycache__/
 
 # local sqlite artifacts
 data/*.sqlite3
+
+# runtime-generated import artifacts
+data/artifacts/
+docs/reports/sample_nav_import_report.md

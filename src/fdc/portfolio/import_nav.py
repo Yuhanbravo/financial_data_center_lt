@@ -98,7 +98,7 @@ def import_nav_csv(
             ],
         )
         batch.status = "failed"
-        batch.completed_at = datetime.utcnow()
+        batch.completed_at = datetime.now(UTC)
         session.commit()
         return _build_result(batch, str(nav_csv_path), str(staged_file), 0, len(raw_rows), {"missing_required_columns": 1}, None, None)
 
@@ -145,7 +145,7 @@ def import_nav_csv(
     batch.status = status
     batch.window_start = min(nav_dates) if nav_dates else None
     batch.window_end = max(nav_dates) if nav_dates else None
-    batch.completed_at = datetime.utcnow()
+    batch.completed_at = datetime.now(UTC)
     session.commit()
 
     return _build_result(

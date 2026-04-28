@@ -23,7 +23,8 @@ Build a minimal, repeatable sample NAV ingestion pipeline using synthetic demo d
 - `scripts/import_sample_nav.py`
 - `tests/test_import_nav_smoke.py`
 - sample CSV data in `data/sample/`
-- report at `docs/reports/sample_nav_import_report.md`
+- runtime report at `data/artifacts/reports/sample_nav_import_report.md` (gitignored)
+- stable example at `docs/reports/sample_nav_import_report.example.md`
 
 ## Acceptance Criteria
 1. `python scripts/init_sqlite.py` succeeds.

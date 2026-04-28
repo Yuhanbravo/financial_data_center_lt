@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     portfolio_csv = ROOT / "data" / "sample" / "portfolio_sample.csv"
     nav_csv = ROOT / "data" / "sample" / "nav_daily_sample.csv"
-    report_file = ROOT / "docs" / "reports" / "sample_nav_import_report.md"
+    report_file = ROOT / "data" / "artifacts" / "reports" / "sample_nav_import_report.md"
 
     with session_local() as session:
         seeded = seed_portfolios(session, portfolio_csv)
