@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import csv
+import logging
+import os
 import shutil
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -13,6 +15,9 @@ from sqlalchemy.orm import Session
 
 from fdc.db.models import DataBatch, DataIssueLog, NavDaily, Portfolio
 from .validation import REQUIRED_NAV_COLUMNS, ValidationIssue, validate_nav_rows
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
@@ -200,6 +205,9 @@ def _stage_source_artifact(nav_csv_path: Path, batch_key: str, artifacts_dir: Pa
     raw_copy = base_artifacts / f"{batch_key}_{nav_csv_path.name}"
     shutil.copy2(nav_csv_path, raw_copy)
 
+    if not _parquet_staging_enabled():
+        return raw_copy
+
     parquet_path = raw_copy.with_suffix(".parquet")
     try:
         import pandas as pd
@@ -207,7 +215,8 @@ def _stage_source_artifact(nav_csv_path: Path, batch_key: str, artifacts_dir: Pa
         frame = pd.read_csv(nav_csv_path)
         frame.to_parquet(parquet_path, index=False)
         return parquet_path
-    except Exception:
+    except Exception as exc:
+        LOGGER.warning("Parquet staging skipped for %s: %s", nav_csv_path, exc)
         return raw_copy
 
 
@@ -246,3 +255,8 @@ def _parse_bool(raw: str | None, default: bool) -> bool:
     if value in {"0", "false", "no", "n"}:
         return False
     return default
+
+
+def _parquet_staging_enabled() -> bool:
+    raw = os.getenv("FDC_ENABLE_PARQUET_STAGING", "")
+    return raw.strip().lower() in {"1", "true", "yes", "on"}

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import builtins
 from pathlib import Path
 
 from sqlalchemy import func, select
@@ -23,13 +24,25 @@ def _session_for_tmp_db(tmp_path):
 
 def test_successful_import(tmp_path):
     session_local = _session_for_tmp_db(tmp_path)
+    original_import = builtins.__import__
+
+    def guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+        if name == "pandas":
+            raise AssertionError("default NAV import path should not import pandas")
+        return original_import(name, globals, locals, fromlist, level)
+
     with session_local() as session:
         seed_portfolios(session, SAMPLE_DIR / "portfolio_sample.csv")
-        result = import_nav_csv(session, SAMPLE_DIR / "nav_daily_sample.csv", artifacts_dir=tmp_path / "artifacts")
+        builtins.__import__ = guarded_import
+        try:
+            result = import_nav_csv(session, SAMPLE_DIR / "nav_daily_sample.csv", artifacts_dir=tmp_path / "artifacts")
+        finally:
+            builtins.__import__ = original_import
 
         assert result.status == "success"
         assert result.accepted_rows == 4
         assert result.rejected_rows == 0
+        assert result.staged_file.endswith(".csv")
         assert session.scalar(select(func.count()).select_from(NavDaily)) == 4
         assert session.scalar(select(func.count()).select_from(DataIssueLog)) == 0
 

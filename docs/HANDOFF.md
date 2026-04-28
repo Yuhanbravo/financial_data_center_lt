@@ -3,7 +3,7 @@
 ## 1. 当前阶段
 - 阶段：Phase 1A-2（样例 NAV 导入流水线）
 - 日期：2026-04-28
-- 状态：已完成（代码与验证已收敛）
+- 状态：已完成（本地 Gate 修复后待合并）
 
 ## 2. 已完成内容
 - 新增样例数据：
@@ -27,6 +27,7 @@
   - 重复执行导入（无 unique constraint 失败）
 
 ## 3. 校验命令与结果（本次实际执行）
+- 目标解释器：`D:\miniforge3\envs\data-center-py312\python.exe`
 - `python scripts/init_sqlite.py`：通过
 - `python scripts/import_sample_nav.py`：通过（生成 batch + 运行期报告）
 - `pytest`：通过（全部通过）
