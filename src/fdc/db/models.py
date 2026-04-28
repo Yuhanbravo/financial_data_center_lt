@@ -10,7 +10,7 @@ from .session import Base
 
 
 def utc_now() -> datetime:
-    return datetime.now(UTC)
+    return datetime.now(UTC).replace(tzinfo=None)
 
 
 class Portfolio(Base):

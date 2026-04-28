@@ -1,6 +1,10 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.pytest-tmp/
+data/test-tmp/
+data/mode-test/
+data/pytest-tmp-safe/
 
 # local VS Code machine-specific settings
 .vscode/settings.json

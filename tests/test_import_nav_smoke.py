@@ -3,11 +3,13 @@ from __future__ import annotations
 import builtins
 from pathlib import Path
 
+import pytest
 from sqlalchemy import func, select
 
 from fdc.db.init_db import init_db
 from fdc.db.models import DataBatch, DataIssueLog, NavDaily
 from fdc.db.session import get_session_local
+import fdc.portfolio.import_nav as import_nav_module
 from fdc.portfolio.import_nav import import_nav_csv, seed_portfolios
 
 
@@ -66,6 +68,40 @@ def test_issue_logging_and_partial_batch(tmp_path):
         assert result.issue_counts["duplicate_source_key"] == 1
         assert session.scalar(select(func.count()).select_from(NavDaily)) == 1
         assert session.scalar(select(func.count()).select_from(DataIssueLog)) == 4
+        assert session.scalar(select(DataIssueLog.table_name).limit(1)) == "nav_daily"
+
+
+def test_relative_path_import_uses_stable_default_artifact_root(tmp_path, monkeypatch):
+    session_local = _session_for_tmp_db(tmp_path)
+    monkeypatch.chdir(ROOT)
+
+    with session_local() as session:
+        seed_portfolios(session, Path("data/sample/portfolio_sample.csv"))
+        result = import_nav_csv(session, Path("data/sample/nav_daily_sample.csv"))
+
+        assert result.status == "success"
+        assert Path(result.staged_file).is_file()
+        assert Path(result.staged_file).parent == ROOT / "data" / "artifacts"
+
+
+def test_unexpected_error_marks_batch_failed(tmp_path, monkeypatch):
+    session_local = _session_for_tmp_db(tmp_path)
+
+    def fail_staging(*args, **kwargs):
+        raise RuntimeError("forced staging failure")
+
+    monkeypatch.setattr(import_nav_module, "_stage_source_artifact", fail_staging)
+
+    with session_local() as session:
+        seed_portfolios(session, SAMPLE_DIR / "portfolio_sample.csv")
+
+        with pytest.raises(RuntimeError, match="forced staging failure"):
+            import_nav_csv(session, SAMPLE_DIR / "nav_daily_sample.csv", artifacts_dir=tmp_path / "artifacts")
+
+        batch = session.scalar(select(DataBatch))
+        assert batch is not None
+        assert batch.status == "failed"
+        assert batch.completed_at is not None
 
 
 def test_foreign_key_safe_behavior_unknown_portfolio(tmp_path):
