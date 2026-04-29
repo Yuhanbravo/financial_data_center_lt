@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
-from math import isfinite, sqrt
+from math import sqrt
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -117,8 +117,7 @@ def build_nav_analysis_report(metrics: list[PortfolioNavMetrics]) -> str:
 
 def _validate_nav_series(portfolio_code: str, nav_series: list[Decimal]) -> None:
     for idx, nav in enumerate(nav_series):
-        nav_float = float(nav)
-        if nav <= 0 or not isfinite(nav_float):
+        if nav <= 0 or not nav.is_finite():
             raise ValueError(f"Invalid NAV for portfolio {portfolio_code} at index {idx}: {nav}")
 
 

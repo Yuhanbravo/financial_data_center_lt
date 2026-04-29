@@ -57,7 +57,8 @@ def test_sample_nav_analysis_script_generates_reports_without_metric_persistence
     assert persisted_metric_count == 0
 
 
-def test_analyze_nav_rejects_invalid_nav_value(tmp_path):
+@pytest.mark.parametrize("invalid_nav", ["0", "-1", "1E9999"])
+def test_analyze_nav_rejects_invalid_nav_value(tmp_path, invalid_nav):
     db_file = tmp_path / "invalid.sqlite3"
     db_url = f"sqlite:///{db_file}"
     env = os.environ.copy()
@@ -68,7 +69,7 @@ def test_analyze_nav_rejects_invalid_nav_value(tmp_path):
 
     session_local = get_session_local(db_url)
     with session_local() as session:
-        session.execute(text("UPDATE nav_daily SET nav = 0 WHERE portfolio_id = (SELECT id FROM portfolio WHERE portfolio_code = 'PF_DEMO_A')"))
+        session.execute(text("UPDATE nav_daily SET nav = :nav WHERE portfolio_id = (SELECT id FROM portfolio WHERE portfolio_code = 'PF_DEMO_A')"), {"nav": invalid_nav})
         session.commit()
 
     with session_local() as session:
