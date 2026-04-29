@@ -7,31 +7,46 @@
 
 ## Portfolio Metrics
 ### PF_DEMO_A
-- Observations: `2`
+- Observation count: `2`
 - Date range: `2026-01-02` to `2026-01-03`
-- Start NAV: `1.00250000`
-- End NAV: `1.00120000`
-- Cumulative return: `-0.00129676`
-- Average daily return: `0.00060162`
-- Min daily return: `-0.00129676`
-- Max daily return: `0.00250000`
+- Latest NAV: `1.00120000`
+- Cumulative return: `-0.1297%`
+- Daily return summary (avg/min/max): `0.0602%` / `-0.1297%` / `0.2500%`
+- Max drawdown: `-0.1297%`
+- Simple annualized volatility (ddof=1): `4.2619%`
+- Win rate: `50.0000%`
+- Monthly return table:
+
+| Month | Return |
+|---|---:|
+| 2026-01 | n/a |
 
 ### PF_DEMO_B
-- Observations: `1`
+- Observation count: `1`
 - Date range: `2026-01-02` to `2026-01-02`
-- Start NAV: `0.99800000`
-- End NAV: `0.99800000`
-- Cumulative return: `0.00000000`
-- Average daily return: `-0.00200000`
-- Min daily return: `-0.00200000`
-- Max daily return: `-0.00200000`
+- Latest NAV: `0.99800000`
+- Cumulative return: `0.0000%`
+- Daily return summary (avg/min/max): `-0.2000%` / `-0.2000%` / `-0.2000%`
+- Max drawdown: `0.0000%`
+- Simple annualized volatility (ddof=1): `n/a`
+- Win rate: `0.0000%`
+- Monthly return table:
+
+| Month | Return |
+|---|---:|
+| 2026-01 | n/a |
 
 ### PF_DEMO_C
-- Observations: `1`
+- Observation count: `1`
 - Date range: `2026-01-02` to `2026-01-02`
-- Start NAV: `1.01000000`
-- End NAV: `1.01000000`
-- Cumulative return: `0.00000000`
-- Average daily return: `0.01000000`
-- Min daily return: `0.01000000`
-- Max daily return: `0.01000000`
+- Latest NAV: `1.01000000`
+- Cumulative return: `0.0000%`
+- Daily return summary (avg/min/max): `1.0000%` / `1.0000%` / `1.0000%`
+- Max drawdown: `0.0000%`
+- Simple annualized volatility (ddof=1): `n/a`
+- Win rate: `100.0000%`
+- Monthly return table:
+
+| Month | Return |
+|---|---:|
+| 2026-01 | n/a |

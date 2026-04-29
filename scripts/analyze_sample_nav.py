@@ -25,10 +25,5 @@ if __name__ == "__main__":
     runtime_report.parent.mkdir(parents=True, exist_ok=True)
     runtime_report.write_text(report, encoding="utf-8")
 
-    example_report = ROOT / "docs" / "reports" / "sample_nav_analysis_report.example.md"
-    example_report.parent.mkdir(parents=True, exist_ok=True)
-    example_report.write_text(report, encoding="utf-8")
-
     print(f"Analyzed portfolios: {len(metrics)}")
     print(f"Runtime report generated: {runtime_report}")
-    print(f"Stable example report generated: {example_report}")
