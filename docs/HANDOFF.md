@@ -1,8 +1,8 @@
 # HANDOFF（SSOT）
 
 ## 1. 当前阶段
-- 阶段：Phase 1A-2（样例 NAV 导入流水线）
-- 日期：2026-04-28
+- 阶段：Phase 1A-3（Portfolio NAV Analysis MVP）
+- 日期：2026-04-29
 - 状态：已完成（本地 Gate 修复后待合并）
 
 ## 2. 已完成内容
@@ -60,3 +60,11 @@
   2) `docs/blueprint/PHASE1A_PLAN.md`
   3) `docs/schema/phase1a_schema.md`
 - 变更模型字段时，同步更新 schema 文档与测试断言，保持“文档与实现一致”。
+
+
+## 8. Phase 1A-3 增量交付
+- 新增 `scripts/analyze_sample_nav.py`：读取 `nav_daily`，生成组合级 NAV 分析 Markdown 报告。
+- 新增 `src/fdc/portfolio/nav_analysis.py`：实现分析口径（累计收益、均值/最小/最大日收益、样本区间）。
+- 新增 `tests/test_nav_analysis_smoke.py`：验证分析脚本可运行、报告落盘、且 `portfolio_metric_daily` 无持久化写入。
+- 运行期报告：`data/artifacts/reports/sample_nav_analysis_report.md`。
+- 稳定示例报告：`docs/reports/sample_nav_analysis_report.example.md`。
