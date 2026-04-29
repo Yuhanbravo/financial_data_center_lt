@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import builtins
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -69,6 +70,44 @@ def test_issue_logging_and_partial_batch(tmp_path):
         assert session.scalar(select(func.count()).select_from(NavDaily)) == 1
         assert session.scalar(select(func.count()).select_from(DataIssueLog)) == 4
         assert session.scalar(select(DataIssueLog.table_name).limit(1)) == "nav_daily"
+
+
+def test_nan_numeric_values_are_logged_and_skipped(tmp_path):
+    session_local = _session_for_tmp_db(tmp_path)
+    nan_csv = tmp_path / "nav_nan_values.csv"
+    nan_csv.write_text(
+        "\n".join(
+            [
+                "portfolio_code,trade_date,nav,nav_accum,daily_return",
+                "PF_DEMO_A,2026-01-02,1.00000000,,0.00100000",
+                "PF_DEMO_A,2026-01-03,NaN,,0.00100000",
+                "PF_DEMO_A,2026-01-04,1.02000000,NaN,0.00100000",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    with session_local() as session:
+        seed_portfolios(session, SAMPLE_DIR / "portfolio_sample.csv")
+        result = import_nav_csv(session, nan_csv, artifacts_dir=tmp_path / "artifacts")
+
+        assert result.status == "partial"
+        assert result.accepted_rows == 1
+        assert result.rejected_rows == 2
+        assert result.issue_counts["invalid_nav"] == 1
+        assert result.issue_counts["invalid_optional_numeric"] == 1
+        assert session.scalar(select(func.count()).select_from(NavDaily)) == 1
+
+        nan_nav_count = session.scalar(
+            select(func.count()).select_from(NavDaily).where(NavDaily.nav_date == date(2026, 1, 3))
+        )
+        assert nan_nav_count == 0
+
+        invalid_nav_issue_count = session.scalar(
+            select(func.count()).select_from(DataIssueLog).where(DataIssueLog.issue_type == "invalid_nav")
+        )
+        assert invalid_nav_issue_count == 1
 
 
 def test_relative_path_import_uses_stable_default_artifact_root(tmp_path, monkeypatch):

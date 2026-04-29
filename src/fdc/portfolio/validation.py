@@ -79,7 +79,29 @@ def validate_nav_rows(rows: list[dict[str, str]], known_portfolios: set[str]) ->
             )
             continue
 
-        if nav_value <= 0:
+        if not nav_value.is_finite():
+            issues.append(
+                ValidationIssue(
+                    issue_type="invalid_nav",
+                    issue_message=f"Invalid nav '{nav_raw}' at source row {row_index}",
+                    record_key=record_key,
+                )
+            )
+            continue
+
+        try:
+            non_positive_nav = nav_value <= 0
+        except InvalidOperation:
+            issues.append(
+                ValidationIssue(
+                    issue_type="invalid_nav",
+                    issue_message=f"Invalid nav '{nav_raw}' at source row {row_index}",
+                    record_key=record_key,
+                )
+            )
+            continue
+
+        if non_positive_nav:
             issues.append(
                 ValidationIssue(
                     issue_type="non_positive_nav",
@@ -108,6 +130,21 @@ def validate_nav_rows(rows: list[dict[str, str]], known_portfolios: set[str]) ->
             nav_accum = Decimal(nav_accum_raw) if nav_accum_raw else None
             daily_return = Decimal(daily_return_raw) if daily_return_raw else None
         except InvalidOperation:
+            issues.append(
+                ValidationIssue(
+                    issue_type="invalid_optional_numeric",
+                    issue_message=(
+                        "Invalid nav_accum or daily_return at source row "
+                        f"{row_index}: nav_accum='{nav_accum_raw}', daily_return='{daily_return_raw}'"
+                    ),
+                    record_key=record_key,
+                )
+            )
+            continue
+
+        if (nav_accum is not None and not nav_accum.is_finite()) or (
+            daily_return is not None and not daily_return.is_finite()
+        ):
             issues.append(
                 ValidationIssue(
                     issue_type="invalid_optional_numeric",

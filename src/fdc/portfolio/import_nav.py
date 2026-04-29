@@ -5,7 +5,7 @@ import logging
 import os
 import shutil
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 from uuid import uuid4
@@ -73,7 +73,7 @@ def import_nav_csv(
     dataset_name: str = "nav_daily",
     artifacts_dir: Path | None = None,
 ) -> ImportResult:
-    batch_key = f"nav_import_{datetime.now(UTC).strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
+    batch_key = f"nav_import_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}_{uuid4().hex[:8]}"
     batch = DataBatch(
         batch_key=batch_key,
         source_name=source_name,
