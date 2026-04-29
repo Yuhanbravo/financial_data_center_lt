@@ -1,6 +1,19 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.pytest-tmp/
+data/test-tmp/
+data/mode-test/
+data/pytest-tmp-safe/
+
+# local VS Code machine-specific settings
+.vscode/settings.json
+.vscode/tasks.json
 
 # local sqlite artifacts
 data/*.sqlite3
+data/**/*.sqlite3
+
+# runtime-generated import artifacts
+data/artifacts/
+docs/reports/sample_nav_import_report.md

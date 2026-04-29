@@ -1,25 +1,36 @@
 # HANDOFF（SSOT）
 
 ## 1. 当前阶段
-- 阶段：Phase 1A-0 / 1A-1（组合层基础建置）
-- 日期：2026-04-26
-- 状态：已建立最小 repo 骨架、文档蓝图、SQLite + SQLAlchemy 初始化能力
+- 阶段：Phase 1A-2（样例 NAV 导入流水线）
+- 日期：2026-04-28
+- 状态：已完成（本地 Gate 修复后待合并）
 
 ## 2. 已完成内容
-1. 项目目录骨架已建立：`src/fdc/`、`src/fdc/db/`、`scripts/`、`tests/`、`data/*`。
-2. 规划文档已落盘：README、总体蓝图、Phase 1A 计划、Schema 字典、任务包。
-3. SQLAlchemy 模型已覆盖 Phase 1A 核心表：
-   - `portfolio`
-   - `data_batch`
-   - `data_issue_log`
-   - `nav_daily`
-   - `portfolio_metric_daily`
-4. 已提供 SQLite 初始化脚本与 smoke test。
+- 新增样例数据：
+  - `data/sample/portfolio_sample.csv`
+  - `data/sample/nav_daily_sample.csv`
+  - `data/sample/nav_daily_sample_with_issues.csv`
+- 实现可复用 NAV 导入能力：
+  - `seed_portfolios`：portfolio 主数据 seed/upsert
+  - `import_nav_csv`：批次创建、校验、写入、issue log、状态落盘
+- 完成校验规则：
+  - 必需列检查（缺列直接 failed + `missing_required_columns` issue）
+  - unknown portfolio_code / invalid trade_date / nav<=0 / duplicate_source_key
+- 脚本 `scripts/import_sample_nav.py`：
+  - 先 seed portfolio，再导入样例 NAV
+  - 运行期报告输出到 `data/artifacts/reports/sample_nav_import_report.md`（不入库）
+- smoke tests 覆盖：
+  - 成功导入
+  - 带问题数据的 partial 导入 + issue logging
+  - 缺失必需列失败路径
+  - FK-safe 行为（unknown portfolio 不写入 nav_daily）
+  - 重复执行导入（无 unique constraint 失败）
 
 ## 3. 校验命令与结果（本次实际执行）
-- `python -m py_compile src/fdc/db/session.py`：通过
-- `python scripts/init_sqlite.py`：通过（输出 `SQLite initialized: sqlite:///.../data/fdc.sqlite3`）
-- `pytest`：通过（`3 passed`）
+- 目标解释器：`D:\miniforge3\envs\data-center-py312\python.exe`
+- `python scripts/init_sqlite.py`：通过
+- `python scripts/import_sample_nav.py`：通过（生成 batch + 运行期报告）
+- `pytest`：通过（全部通过）
 
 ## 4. 未完成内容（按阶段边界刻意留空）
 - 持仓层（positions）
@@ -37,13 +48,10 @@
 - 不扩展到组合穿透分析、风控引擎、多资产估值。
 
 ## 6. 下一步推荐任务（优先级）
-1. **Phase 1A-2：样例 NAV 装载 + 校验 + issue log 落盘**
-   - 新增最小 ingest demo（CSV -> staged -> SQLite，仅 sample 数据）
-   - 为 `data_batch` 与 `data_issue_log` 建立可复用写入方法
-2. **Phase 1A-3：组合级指标装载流程**
-   - 构建 `portfolio_metric_daily` 装载与校验
-   - 形成批次状态闭环（pending/success/failed）
-3. **Phase 1B：持仓/交易/标的层扩展**
+1. **Phase 1A-3：组合 NAV 分析能力**
+   - 在现有 `nav_daily` 基础上实现组合级 NAV 分析与验证闭环
+   - `portfolio_metric_daily` ingestion 作为后续可选增强（非本阶段必做）
+2. **Phase 1B：持仓/交易/标的层扩展**
    - holdings / positions / trades / instruments 分层建模
 
 ## 7. 接手提示
