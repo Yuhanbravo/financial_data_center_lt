@@ -53,7 +53,7 @@
 2. **Phase 1A-3B（可选）：`portfolio_metric_daily` ingestion**
   - 仅作为可选后续增强，不是当前主线交付
 3. **Phase 1B：持仓/交易/标的层扩展**
-   - holdings / positions / trades / instruments 分层建模
+  - holdings / positions / trades / instruments 分层建模
 
 ## 7. 接手提示
 - 先阅读：
