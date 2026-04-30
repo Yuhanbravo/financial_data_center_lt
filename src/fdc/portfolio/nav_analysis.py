@@ -36,22 +36,23 @@ def analyze_nav(session: Session) -> list[PortfolioNavMetrics]:
 
     for portfolio_id, portfolio_code in portfolios:
         rows = session.execute(
-            select(NavDaily.nav_date, NavDaily.nav, NavDaily.daily_return)
+            select(NavDaily.nav_date, NavDaily.nav)
             .where(NavDaily.portfolio_id == portfolio_id)
             .order_by(NavDaily.nav_date)
         ).all()
         if not rows:
             continue
 
-        nav_series = [r.nav for r in rows]
-        _validate_nav_series(portfolio_code, nav_series)
+        dated_navs = [(r.nav_date, r.nav) for r in rows]
+        _validate_nav_series(portfolio_code, dated_navs)
 
-        daily_returns = [float(r.daily_return) for r in rows if r.daily_return is not None]
+        nav_series = [nav for _, nav in dated_navs]
+        daily_returns = _compute_daily_returns(dated_navs)
         cumulative_return = (nav_series[-1] / nav_series[0]) - Decimal("1")
         max_drawdown = _compute_max_drawdown(nav_series)
         annualized_volatility = _compute_annualized_volatility(daily_returns)
         win_rate = _compute_win_rate(daily_returns)
-        monthly_returns = _compute_monthly_returns([(r.nav_date, r.nav) for r in rows])
+        monthly_returns = _compute_monthly_returns(dated_navs)
 
         output.append(
             PortfolioNavMetrics(
@@ -61,9 +62,9 @@ def analyze_nav(session: Session) -> list[PortfolioNavMetrics]:
                 end_date=rows[-1].nav_date.isoformat(),
                 latest_nav=rows[-1].nav,
                 cumulative_return=cumulative_return,
-                average_daily_return=Decimal(str(sum(daily_returns) / len(daily_returns))) if daily_returns else None,
-                min_daily_return=Decimal(str(min(daily_returns))) if daily_returns else None,
-                max_daily_return=Decimal(str(max(daily_returns))) if daily_returns else None,
+                average_daily_return=_compute_average_daily_return(daily_returns),
+                min_daily_return=min(daily_returns) if daily_returns else None,
+                max_daily_return=max(daily_returns) if daily_returns else None,
                 max_drawdown=max_drawdown,
                 annualized_volatility=annualized_volatility,
                 win_rate=win_rate,
@@ -100,7 +101,7 @@ def build_nav_analysis_report(metrics: list[PortfolioNavMetrics]) -> str:
                 f"- Cumulative return: `{_fmt_pct(item.cumulative_return)}`",
                 f"- Daily return summary (avg/min/max): `{_fmt_pct(item.average_daily_return)}` / `{_fmt_pct(item.min_daily_return)}` / `{_fmt_pct(item.max_daily_return)}`",
                 f"- Max drawdown: `{_fmt_pct(item.max_drawdown)}`",
-                f"- Simple annualized volatility (ddof=1): `{_fmt_pct(item.annualized_volatility)}`",
+                f"- Annualized volatility (ddof=1): `{_fmt_pct(item.annualized_volatility)}`",
                 f"- Win rate: `{_fmt_pct(item.win_rate)}`",
                 "- Monthly return table:",
                 "",
@@ -115,10 +116,26 @@ def build_nav_analysis_report(metrics: list[PortfolioNavMetrics]) -> str:
     return "\n".join(lines)
 
 
-def _validate_nav_series(portfolio_code: str, nav_series: list[Decimal]) -> None:
-    for idx, nav in enumerate(nav_series):
-        if nav <= 0 or not nav.is_finite():
-            raise ValueError(f"Invalid NAV for portfolio {portfolio_code} at index {idx}: {nav}")
+def _validate_nav_series(portfolio_code: str, rows: list[tuple[date, Decimal]]) -> None:
+    for idx, (nav_date, nav) in enumerate(rows):
+        if not nav.is_finite() or nav <= 0:
+            raise ValueError(f"Invalid NAV for portfolio {portfolio_code} on {nav_date.isoformat()} at index {idx}: {nav}")
+
+
+def _compute_daily_returns(rows: list[tuple[date, Decimal]]) -> list[Decimal]:
+    output: list[Decimal] = []
+    previous_nav: Decimal | None = None
+    for _, nav in rows:
+        if previous_nav is not None:
+            output.append((nav / previous_nav) - Decimal("1"))
+        previous_nav = nav
+    return output
+
+
+def _compute_average_daily_return(daily_returns: list[Decimal]) -> Decimal | None:
+    if not daily_returns:
+        return None
+    return sum(daily_returns, start=Decimal("0")) / Decimal(len(daily_returns))
 
 
 def _compute_max_drawdown(nav_series: list[Decimal]) -> Decimal:
@@ -133,15 +150,16 @@ def _compute_max_drawdown(nav_series: list[Decimal]) -> Decimal:
     return max_drawdown
 
 
-def _compute_annualized_volatility(daily_returns: list[float]) -> Decimal | None:
+def _compute_annualized_volatility(daily_returns: list[Decimal]) -> Decimal | None:
     if len(daily_returns) < 2:
         return None
-    mean = sum(daily_returns) / len(daily_returns)
-    sample_var = sum((x - mean) ** 2 for x in daily_returns) / (len(daily_returns) - 1)
+    return_values = [float(value) for value in daily_returns]
+    mean = sum(return_values) / len(return_values)
+    sample_var = sum((x - mean) ** 2 for x in return_values) / (len(return_values) - 1)
     return Decimal(str(sqrt(sample_var))) * TRADING_DAYS_PER_YEAR.sqrt()
 
 
-def _compute_win_rate(daily_returns: list[float]) -> Decimal | None:
+def _compute_win_rate(daily_returns: list[Decimal]) -> Decimal | None:
     if not daily_returns:
         return None
     wins = sum(1 for r in daily_returns if r > 0)

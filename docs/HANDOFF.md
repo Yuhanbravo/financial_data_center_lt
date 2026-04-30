@@ -2,8 +2,8 @@
 
 ## 1. 当前阶段
 - 阶段：Phase 1A-3（Portfolio NAV Analysis MVP）
-- 日期：2026-04-29
-- 状态：已完成（本地 Gate 修复后待合并）
+- 日期：2026-04-30
+- 状态：当前完成 / 待合并
 
 ## 2. 已完成内容
 - 新增样例数据：
@@ -48,10 +48,11 @@
 - 不扩展到组合穿透分析、风控引擎、多资产估值。
 
 ## 6. 下一步推荐任务（优先级）
-1. **Phase 1A-3：组合 NAV 分析能力**
-   - 在现有 `nav_daily` 基础上实现组合级 NAV 分析与验证闭环
-   - `portfolio_metric_daily` ingestion 作为后续可选增强（非本阶段必做）
-2. **Phase 1B：持仓/交易/标的层扩展**
+1. **Phase 1A-4：report / display enhancement**
+  - 在当前 Phase 1A-3 MVP 基础上增强展示层与报告可读性，不改主线数据边界
+2. **Phase 1A-3B（可选）：`portfolio_metric_daily` ingestion**
+  - 仅作为可选后续增强，不是当前主线交付
+3. **Phase 1B：持仓/交易/标的层扩展**
    - holdings / positions / trades / instruments 分层建模
 
 ## 7. 接手提示
@@ -63,8 +64,8 @@
 
 
 ## 8. Phase 1A-3 增量交付
-- 新增 `scripts/analyze_sample_nav.py`：读取 `nav_daily`，生成组合级 NAV 分析 Markdown 报告。
-- 新增 `src/fdc/portfolio/nav_analysis.py`：实现分析口径（累计收益、均值/最小/最大日收益、样本区间）。
-- 新增 `tests/test_nav_analysis_smoke.py`：验证分析脚本可运行、报告落盘、且 `portfolio_metric_daily` 无持久化写入。
+- 新增 `scripts/analyze_sample_nav.py`：读取 `nav_daily`，只生成运行期 Markdown 报告到 `data/artifacts/reports/sample_nav_analysis_report.md`。
+- 新增 `src/fdc/portfolio/nav_analysis.py`：实现分析口径（相邻 NAV 日收益、累计收益、最大回撤、`ddof=1` 年化波动率、胜率、月度收益表）。
+- 新增 `tests/test_nav_analysis_smoke.py`：验证核心指标数值、单观测 `n/a` 语义、单月月度收益表、invalid NAV 安全失败、且 `portfolio_metric_daily` 无持久化写入。
 - 运行期报告：`data/artifacts/reports/sample_nav_analysis_report.md`。
 - 稳定示例报告：`docs/reports/sample_nav_analysis_report.example.md`。

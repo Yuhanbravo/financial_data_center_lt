@@ -11,10 +11,10 @@
 - Date range: `2026-01-02` to `2026-01-03`
 - Latest NAV: `1.00120000`
 - Cumulative return: `-0.1297%`
-- Daily return summary (avg/min/max): `0.0602%` / `-0.1297%` / `0.2500%`
+- Daily return summary (avg/min/max): `-0.1297%` / `-0.1297%` / `-0.1297%`
 - Max drawdown: `-0.1297%`
-- Simple annualized volatility (ddof=1): `4.2619%`
-- Win rate: `50.0000%`
+- Annualized volatility (ddof=1): `n/a`
+- Win rate: `0.0000%`
 - Monthly return table:
 
 | Month | Return |
@@ -26,10 +26,10 @@
 - Date range: `2026-01-02` to `2026-01-02`
 - Latest NAV: `0.99800000`
 - Cumulative return: `0.0000%`
-- Daily return summary (avg/min/max): `-0.2000%` / `-0.2000%` / `-0.2000%`
+- Daily return summary (avg/min/max): `n/a` / `n/a` / `n/a`
 - Max drawdown: `0.0000%`
-- Simple annualized volatility (ddof=1): `n/a`
-- Win rate: `0.0000%`
+- Annualized volatility (ddof=1): `n/a`
+- Win rate: `n/a`
 - Monthly return table:
 
 | Month | Return |
@@ -41,10 +41,10 @@
 - Date range: `2026-01-02` to `2026-01-02`
 - Latest NAV: `1.01000000`
 - Cumulative return: `0.0000%`
-- Daily return summary (avg/min/max): `1.0000%` / `1.0000%` / `1.0000%`
+- Daily return summary (avg/min/max): `n/a` / `n/a` / `n/a`
 - Max drawdown: `0.0000%`
-- Simple annualized volatility (ddof=1): `n/a`
-- Win rate: `100.0000%`
+- Annualized volatility (ddof=1): `n/a`
+- Win rate: `n/a`
 - Monthly return table:
 
 | Month | Return |

@@ -11,6 +11,8 @@ if str(SRC) not in sys.path:
 from fdc.db.session import get_session_local, resolve_database_url
 from fdc.portfolio.nav_analysis import analyze_nav, build_nav_analysis_report
 
+RUNTIME_REPORT = ROOT / "data" / "artifacts" / "reports" / "sample_nav_analysis_report.md"
+
 
 if __name__ == "__main__":
     db_url = resolve_database_url()
@@ -21,9 +23,8 @@ if __name__ == "__main__":
 
     report = build_nav_analysis_report(metrics)
 
-    runtime_report = ROOT / "data" / "artifacts" / "reports" / "sample_nav_analysis_report.md"
-    runtime_report.parent.mkdir(parents=True, exist_ok=True)
-    runtime_report.write_text(report, encoding="utf-8")
+    RUNTIME_REPORT.parent.mkdir(parents=True, exist_ok=True)
+    RUNTIME_REPORT.write_text(report, encoding="utf-8")
 
     print(f"Analyzed portfolios: {len(metrics)}")
-    print(f"Runtime report generated: {runtime_report}")
+    print(f"Runtime report generated: {RUNTIME_REPORT}")
