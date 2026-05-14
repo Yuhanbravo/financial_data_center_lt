@@ -60,7 +60,6 @@ def render_portfolio_report(model: PortfolioReportModel) -> str:
         "",
         "## Import Summary",
         f"- Batch ID: `{model.import_summary.batch_id}`",
-        f"- Batch Key: `{model.import_summary.batch_key}`",
         f"- Status: `{model.import_summary.status}`",
         f"- Rows (total/accepted/rejected): `{model.import_summary.total_rows}` / `{model.import_summary.accepted_rows}` / `{model.import_summary.rejected_rows}`",
         f"- Date window: `{model.import_summary.window_start}` to `{model.import_summary.window_end}`",
