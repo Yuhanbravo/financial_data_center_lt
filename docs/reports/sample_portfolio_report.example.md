@@ -7,29 +7,26 @@
 ## Import Summary
 - Batch ID: `1`
 - Batch Key: `nav_import_example`
-- Status: `partial`
-- Rows (total/accepted/rejected): `6` / `4` / `2`
+- Status: `success`
+- Rows (total/accepted/rejected): `4` / `4` / `0`
 - Date window: `2026-01-02` to `2026-01-03`
 
 ## Issue Summary
-- Total issues: `2`
-- Issue type breakdown:
-  - `invalid_numeric`: 1
-  - `missing_required_field`: 1
-- Severity breakdown:
-  - `error`: 2
+- Total issues: `0`
+- Issue type breakdown: none
+- Severity breakdown: none
 
 ## Portfolio Summary
-- Portfolio: `PF_DEMO_A` (Demo Portfolio A)
+- Portfolio: `PF_DEMO_A` (Demo Growth Portfolio A)
 - Observation count: `2`
 - Date range: `2026-01-02` to `2026-01-03`
-- Latest NAV: `1.00120000`
+- Latest NAV: `1.00250000`
 
 ## NAV Analysis Summary
-- Cumulative return: `-0.1297%`
-- Max drawdown: `-0.1297%`
+- Cumulative return: `0.2500%`
+- Max drawdown: `0.0000%`
 - Annualized volatility (ddof=1): `n/a`
-- Win rate: `0.0000%`
+- Win rate: `100.0000%`
 
 ## Monthly Return Table
 | Month | Return |
