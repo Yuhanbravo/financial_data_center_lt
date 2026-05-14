@@ -1,5 +1,7 @@
 # P1.7 Main-branch Project Takeover Dogfood with SKILL_HUB_SOURCE Policy
 
+Archive note: this support artifact was moved from the former root `tasks/` directory to `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/` during task-directory governance.
+
 ## 1. Background
 
 This task package defines a main-branch read-only `project-takeover` dogfood for `financial_data_center_lt`.
@@ -33,9 +35,9 @@ Run a read-only project-level takeover assessment on the latest local `main` sta
 - Inspect `SKILL_HUB_SOURCE.md` as a project-side source policy, if present.
 - Assess README, config, docs, reports, tasks, source, tests, scripts, and data boundary signals in read-only mode.
 - Create only the authorized output artifacts:
-  - `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_task_package.md`
+  - `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/task_package.md`
   - `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood_review.md`
-  - `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_execution_report.md`
+  - `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/execution_report.md`
 - Use `shared assessment output protocol` fields in the review memo:
   - `capability_fit`
   - `maturity_score`, only when applicable
@@ -52,7 +54,7 @@ Run a read-only project-level takeover assessment on the latest local `main` sta
 - Do not modify `D:\dev\ai-skill-hub`.
 - Do not modify `SKILL_HUB_SOURCE.md`.
 - Do not modify target project source, tests, scripts, data, config, README, `docs/HANDOFF.md`, or `docs/status/`.
-- Do not modify existing files under `docs/reviews/` or existing files under `tasks/` other than the authorized artifacts for this run.
+- Do not modify existing files under `docs/reviews/` other than the authorized artifacts for this run.
 - Do not create `AGENTS.md`.
 - Do not copy any skill-hub `SKILL.md` body into the target project.
 - Do not introduce validator, automation, CI, router-pipeline integration, or runtime pack files.
@@ -75,7 +77,7 @@ Read-only target project areas:
 - `docs/status/*.md`, if present
 - `docs/tasks/*.md`, if present
 - `docs/reports/*.md`, if present
-- `tasks/*.md`, if present
+- `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/*.md`, if present
 - `src/`
 - `tests/`
 - `scripts/`
@@ -92,9 +94,9 @@ Read-only canonical skill source files:
 
 Allowed write targets:
 
-- `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_task_package.md`
+- `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/task_package.md`
 - `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood_review.md`
-- `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_execution_report.md`
+- `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/execution_report.md`
 
 ## 6. Acceptance checks
 
@@ -113,7 +115,7 @@ Validation commands to record from target project:
 
 ```powershell
 git branch --show-current
-git diff -- docs/reviews tasks
+git diff -- docs/reviews
 git diff --name-only
 git status --short
 rg "capability_fit|maturity_score|risk_priority|impact_scope|open_questions|next_action" docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood_review.md
@@ -146,9 +148,9 @@ git status --short
 
 Required outputs:
 
-- Task package at `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_task_package.md`.
+- Task package at `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/task_package.md`.
 - Review memo at `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood_review.md`.
-- Execution report at `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_execution_report.md`.
+- Execution report at `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/execution_report.md`.
 - Final Reviewer decision.
 - Recommended commit message:
   - `docs(reviews): dogfood main project takeover with source policy`
@@ -165,6 +167,6 @@ The review memo final decision must be exactly one of:
 
 - The latest local `main` branch is the intended assessment target; no pull or fetch is authorized.
 - `D:\dev\ai-skill-hub` is available as sibling canonical skill source for read-only reference.
-- `tasks/` and `docs/reviews/` may be created if absent because the authorized outputs require those paths.
+- `docs/reviews/` may be created if absent because the authorized outputs require those paths.
 - Running repository inspection commands and `rg` searches is sufficient validation for this documentation-only dogfood.
 - Product tests are not required because this run is read-only assessment plus artifact creation, not source behavior change.

@@ -56,7 +56,7 @@ Not found / absent signals：
 
 - `pyproject.toml`: not found
 - `docs/status/`: not found
-- pre-existing top-level `tasks/`: not found before this run
+- pre-existing top-level `tasks/`: not found before this run; the run's support artifacts are now archived under `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/`
 
 未修改文件：
 
@@ -122,7 +122,7 @@ Docs / reports / tasks / handoff/status:
 - `docs/tasks/` contains Phase 1A-1, Phase 1A-2, and Phase 1A-3 task packages.
 - `docs/reports/` contains stable example reports for sample NAV import and NAV analysis.
 - `docs/status/` is not present.
-- Top-level `tasks/` did not exist before this run and is created only for authorized task package / execution report artifacts.
+- Top-level `tasks/` did not exist before this run; the authorized task package / execution report artifacts are now archived under `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/`.
 
 Recent git state:
 

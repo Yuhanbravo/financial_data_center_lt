@@ -1,5 +1,7 @@
 # P1.7 Main Project Takeover Shared Assessment Protocol Dogfood Execution Report
 
+Archive note: this support artifact was moved from the former root `tasks/` directory to `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/` during task-directory governance.
+
 ## 1. Scope Restatement
 
 This run executed a main-branch read-only `project-takeover` dogfood for `financial_data_center_lt`.
@@ -21,9 +23,9 @@ Boundary: only the three authorized artifacts were created. No source, tests, sc
 
 Changed / created:
 
-- `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_task_package.md`
+- `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/task_package.md`
 - `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood_review.md`
-- `tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_execution_report.md`
+- `docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/execution_report.md`
 
 Unchanged:
 
@@ -148,19 +150,18 @@ Post-implementation validation:
 git branch --show-current
 main
 
-git diff -- docs/reviews tasks
-<empty because created artifacts are untracked>
+git diff -- docs/reviews
+<empty because created artifacts were untracked at the time>
 
 git diff --name-only
 <empty because created artifacts are untracked>
 
 git status --short
 ?? docs/reviews/
-?? tasks/
 
 git status --short --untracked-files=all
 ?? docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood_review.md
-?? tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_task_package.md
+?? docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/task_package.md
 ```
 
 Final status after execution report creation:
@@ -171,8 +172,8 @@ main
 
 git status --short --untracked-files=all
 ?? docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood_review.md
-?? tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_execution_report.md
-?? tasks/p1_7_main_project_takeover_shared_assessment_protocol_dogfood_task_package.md
+?? docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/execution_report.md
+?? docs/reviews/main_project_takeover_shared_assessment_protocol_dogfood/task_package.md
 
 git diff --name-only
 <empty because created artifacts are untracked>

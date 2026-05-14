@@ -15,7 +15,9 @@ Phase 1A baseline (Phases 1A-2 through 1A-4 complete, baseline Gate passed).
 
 Read `docs/HANDOFF.md` — single source of truth for current state, completed scope, and boundaries.
 
-Task packages live in `docs/tasks/`. Each is the implementation contract for its phase.
+Task packages live in `docs/tasks/`. Each is the implementation contract for its product phase.
+
+Review, dogfood, or governance run support artifacts (for example task packages and execution reports) live under `docs/reviews/<review_or_run_id>/`. Do not use a root-level `tasks/` directory.
 
 ## Local validation
 
@@ -45,8 +47,8 @@ All five must pass for a Gate check.
 | `docs/blueprint/` | Architecture & phase plans |
 | `docs/schema/` | Schema dictionary |
 | `docs/reports/` | Stable example reports |
-| `docs/reviews/` | Review records |
-| `docs/tasks/` | Task package history & contracts |
+| `docs/reviews/` | Review records and review/governance support archives |
+| `docs/tasks/` | Product phase task package history & contracts |
 
 ## Hard boundaries
 
