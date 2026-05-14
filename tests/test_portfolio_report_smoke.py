@@ -3,18 +3,30 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
+from datetime import date, timedelta
+from decimal import Decimal
 from pathlib import Path
 
 from sqlalchemy import func, select
 
-from fdc.db.models import PortfolioMetricDaily
+from fdc.db.models import NavDaily, Portfolio, PortfolioMetricDaily
 from fdc.db.session import get_session_local
 
 ROOT = Path(__file__).resolve().parents[1]
+RUNTIME_REPORT = ROOT / "data" / "artifacts" / "reports" / "sample_portfolio_report.md"
 
 
 def _run(script: str, env: dict[str, str]) -> None:
     subprocess.run([sys.executable, script], check=True, cwd=ROOT, env=env)
+
+
+def _report_row_counts(content: str) -> tuple[int, int, int]:
+    prefix = "- Rows (total/accepted/rejected): "
+    for line in content.splitlines():
+        if line.startswith(prefix):
+            values = line.removeprefix(prefix).replace("`", "").split(" / ")
+            return tuple(int(value) for value in values)
+    raise AssertionError("Import Summary row counts line not found")
 
 
 def test_portfolio_report_generation_uses_sqlite_workflow_and_preserves_example(tmp_path):
@@ -31,12 +43,11 @@ def test_portfolio_report_generation_uses_sqlite_workflow_and_preserves_example(
     _run("scripts/analyze_sample_nav.py", env)
     _run("scripts/generate_sample_portfolio_report.py", env)
 
-    runtime = ROOT / "data" / "artifacts" / "reports" / "sample_portfolio_report.md"
-    assert runtime.is_file()
+    assert RUNTIME_REPORT.is_file()
     assert stable_example.is_file()
     assert stable_example.read_text(encoding="utf-8") == before_example
 
-    content = runtime.read_text(encoding="utf-8")
+    content = RUNTIME_REPORT.read_text(encoding="utf-8")
     for section in [
         "# Sample Portfolio Report",
         "## Report Overview",
@@ -53,11 +64,46 @@ def test_portfolio_report_generation_uses_sqlite_workflow_and_preserves_example(
     assert "Batch ID:" in content
     assert "Annualized volatility (ddof=1):" in content
     assert "| Month | Return |" in content
+    assert _report_row_counts(content) == (4, 4, 0)
 
     session_local = get_session_local(db_url)
     with session_local() as session:
         persisted_metric_count = session.scalar(select(func.count()).select_from(PortfolioMetricDaily))
     assert persisted_metric_count == 0
+
+
+def test_import_summary_uses_latest_batch_counts_not_portfolio_observation_count(tmp_path):
+    db_file = tmp_path / "phase1a4_batch_counts.sqlite3"
+    db_url = f"sqlite:///{db_file}"
+    env = os.environ.copy()
+    env["FDC_DB_URL"] = db_url
+
+    _run("scripts/init_sqlite.py", env)
+    _run("scripts/import_sample_nav.py", env)
+
+    session_local = get_session_local(db_url)
+    with session_local() as session:
+        portfolio = session.scalar(select(Portfolio).where(Portfolio.portfolio_code == "PF_DEMO_A"))
+        assert portfolio is not None
+        session.add_all(
+            [
+                NavDaily(
+                    portfolio_id=portfolio.id,
+                    nav_date=date(2025, 12, 20) + timedelta(days=index),
+                    nav=Decimal("1.00000000") + Decimal(index) / Decimal("10000"),
+                )
+                for index in range(10)
+            ]
+        )
+        session.commit()
+
+    _run("scripts/import_sample_nav.py", env)
+    _run("scripts/analyze_sample_nav.py", env)
+    _run("scripts/generate_sample_portfolio_report.py", env)
+
+    content = RUNTIME_REPORT.read_text(encoding="utf-8")
+    assert "- Observation count: `12`" in content
+    assert _report_row_counts(content) == (4, 4, 0)
 
 
 def test_no_pandas_numpy_core_dependency_introduced():

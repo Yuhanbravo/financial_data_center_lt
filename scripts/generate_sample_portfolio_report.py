@@ -47,6 +47,11 @@ if __name__ == "__main__":
             .order_by(DataIssueLog.severity)
         ).all()
         total_issues = sum(v for _, v in issue_type_counts)
+        total_rows = int(latest_batch.row_count)
+        # DataBatch stores source row_count, while rejected row totals are derived
+        # from batch-linked issue logs in the current schema.
+        rejected_rows = int(total_issues)
+        accepted_rows = max(0, total_rows - rejected_rows)
 
         metrics = analyze_nav(session)
         if not metrics:
@@ -58,20 +63,15 @@ if __name__ == "__main__":
             raise RuntimeError("Portfolio not found for analysis output.")
 
         obs_count = session.scalar(select(func.count()).select_from(NavDaily).where(NavDaily.portfolio_id == portfolio.id)) or 0
-        portfolio_import_status = (
-            f"{latest_batch.status} "
-            f"(portfolio-scoped counts for {portfolio.portfolio_code}; "
-            "batch-level accepted/rejected counts are unavailable in this report)"
-        )
 
     model = PortfolioReportModel(
         import_summary=ImportSummary(
             batch_id=latest_batch.id,
             batch_key=latest_batch.batch_key,
-            status=portfolio_import_status,
-            total_rows=obs_count,
-            accepted_rows=obs_count,
-            rejected_rows=0,
+            status=latest_batch.status,
+            total_rows=total_rows,
+            accepted_rows=accepted_rows,
+            rejected_rows=rejected_rows,
             window_start=latest_batch.window_start.isoformat() if latest_batch.window_start else None,
             window_end=latest_batch.window_end.isoformat() if latest_batch.window_end else None,
         ),

@@ -35,6 +35,7 @@
 
 ## Method Notes
 - Data lineage: sample SQLite initialization + sample NAV import + Phase 1A-3 NAV analysis reuse.
+- Import Summary row counts use latest batch row_count minus batch-linked issue log count.
 - Determinism: section order, metric formatting, and table ordering are fixed.
 
 ## Known Limitations and Next Steps
