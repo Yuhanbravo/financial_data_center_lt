@@ -58,15 +58,20 @@ if __name__ == "__main__":
             raise RuntimeError("Portfolio not found for analysis output.")
 
         obs_count = session.scalar(select(func.count()).select_from(NavDaily).where(NavDaily.portfolio_id == portfolio.id)) or 0
+        portfolio_import_status = (
+            f"{latest_batch.status} "
+            f"(portfolio-scoped counts for {portfolio.portfolio_code}; "
+            "batch-level accepted/rejected counts are unavailable in this report)"
+        )
 
     model = PortfolioReportModel(
         import_summary=ImportSummary(
             batch_id=latest_batch.id,
             batch_key=latest_batch.batch_key,
-            status=latest_batch.status,
-            total_rows=latest_batch.row_count,
+            status=portfolio_import_status,
+            total_rows=obs_count,
             accepted_rows=obs_count,
-            rejected_rows=max(0, latest_batch.row_count - obs_count),
+            rejected_rows=0,
             window_start=latest_batch.window_start.isoformat() if latest_batch.window_start else None,
             window_end=latest_batch.window_end.isoformat() if latest_batch.window_end else None,
         ),
