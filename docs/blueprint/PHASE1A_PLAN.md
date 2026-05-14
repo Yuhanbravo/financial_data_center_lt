@@ -8,13 +8,15 @@
 - 净值日表（nav_daily）
 - 组合级指标日表（portfolio_metric_daily）
 
+Baseline status（2026-05-14）：Phase 1A-2 sample NAV import pipeline、Phase 1A-3 Portfolio NAV Analysis MVP、Phase 1A-4 Portfolio NAV Report / Display MVP 均已完成并合入 `main`。
+
 ## 2. In Scope
 1. repo 目录骨架初始化
 2. SQLAlchemy 模型定义（上述 5 张核心表）
 3. SQLite 会话与初始化脚本
 4. schema smoke tests
 5. 文档与任务包落盘
-6. Phase 1A-2 / 1A-3 路标定义（样例 NAV 装载、校验、issue log、组合指标）
+6. Phase 1A-2 / 1A-3 / 1A-4 已完成能力记录（样例 NAV 装载、校验、issue log、组合 NAV 分析、组合报告展示）
 
 ## 3. Out of Scope
 - 持仓层/交易层/标的层建模
@@ -52,8 +54,10 @@
 - 完成 Blueprint / Plan / Schema / Task Package
 
 ### Task E：Phase 1A 后续路标（文档层）
-- Phase 1A-2：样例 NAV 装载 + 基础校验 + issue log 写入
-- Phase 1A-3：组合指标装载 + 批次闭环
+- Phase 1A-2：样例 NAV 装载 + 基础校验 + issue log 写入（已完成）
+- Phase 1A-3：Portfolio NAV Analysis MVP（已完成）
+- Phase 1A-4：Portfolio NAV Report / Display MVP（已完成）
+- Phase 1A-5：Read-only Query Interface MVP（推荐下一步）
 
 ## 6. 交付物
 - 可运行 SQLite 初始化脚本
@@ -69,10 +73,12 @@
 5. Schema 文档与 SQLAlchemy 模型基本一致
 
 ## 8. 下一阶段边界
-- **Phase 1A-2 / 1A-3（仍在 1A）**：
-  - 样例 NAV ingest（仅 sample 数据）
-  - 数据校验与 issue log 写入
-  - 组合级指标日表装载
+- **Phase 1A 已完成 baseline**：
+  - Phase 1A-2：样例 NAV ingest（仅 sample 数据）、数据校验与 issue log 写入
+  - Phase 1A-3：组合 NAV 分析 MVP
+  - Phase 1A-4：组合 NAV 报告 / 展示 MVP
+- **Phase 1A 推荐下一步**：
+  - Phase 1A-5：Read-only Query Interface MVP
 - **Phase 1B（下一阶段）**：
   - 扩展到 holdings / positions / trades / instruments
   - 不把组合层 ingest 任务挪到 1B

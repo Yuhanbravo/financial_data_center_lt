@@ -18,13 +18,19 @@
 ### Phase 1A（当前）
 - 范围：组合层存储与分析基础能力（组合主数据、日频净值、组合级指标、数据批次与质量日志）
 - 存储：SQLite
-- 能力：建表、初始化、基础 smoke test
+- 能力：建表、初始化、基础 smoke test、sample NAV import、Portfolio NAV Analysis MVP、Portfolio NAV Report / Display MVP
 - 不包含：持仓、交易、行情接入、API、前端、复杂指标引擎
+- Baseline status（2026-05-14）：Phase 1A-2、Phase 1A-3、Phase 1A-4 均已完成并合入 `main`；当前主线 baseline Gate 已通过。
 
-#### Phase 1A-2 / 1A-3（仍属于 1A）
+#### Phase 1A-2 / 1A-3 / 1A-4（已完成，仍属于 1A）
 - 1A-2：样例 NAV 数据装载（仅 sample 数据）、基础校验、`data_issue_log` 写入
-- 1A-3：组合级指标日表装载与校验、批次状态闭环
-- 说明：以上均为组合层范围，不扩展到 instrument/holding/trade 颗粒度
+- 1A-3：Portfolio NAV Analysis MVP，基于 `nav_daily` 生成组合层 NAV 分析报告，不写入 `portfolio_metric_daily`
+- 1A-4：Portfolio NAV Report / Display MVP，组合 import 与 analysis 输出生成统一样例组合报告
+- 说明：以上均为组合层范围，不扩展到 instrument/holding/trade 颗粒度，不引入 API、前端、market data、PostgreSQL/Alembic
+
+#### Phase 1A 推荐下一步
+- 1A-5：Read-only Query Interface MVP
+- 可选：1A-3B `portfolio_metric_daily` sample ingestion
 
 ### Phase 1B（下一阶段）
 - 范围：扩展到持仓/交易/标的层（holdings / positions / trades / instruments）
