@@ -1,10 +1,14 @@
 # HANDOFF（SSOT）
 
+## Update Log
+- 2026-05-15：使用 `chatgpt-handoff-pilot` 增量刷新 handoff 主文档；确认 `docs/HANDOFF.md` 仍为 current project state SSOT，纳入 `docs/status.md` / `docs/status_updates.log` 作为 snapshot/log 输出，补充环境阻塞说明，并保持下一步指向 Phase 1A-5B。Environment blockers：无代码级阻塞；本地 ACL warning 仍为非阻塞说明。
+
 ## 1. 当前状态
 - 日期：2026-05-15
 - 目标主线：`main`
-- 状态：Phase 1A-5A completed baseline / technical onboarding refresh
+- 状态：Phase 1A-5A completed baseline / technical onboarding and status snapshot refresh
 - 结论：Phase 1A-2、Phase 1A-3、Phase 1A-4、Phase 1A-5A 均已完成并合入主线；当前下一阶段为 Phase 1A-5B：Read-only FastAPI Adapter MVP。
+- 状态文档：`docs/status.md` 是 `update-project-status` 生成的 snapshot；`docs/status_updates.log` 是状态更新日志。二者不替代本文件的 SSOT 角色。
 
 ## 2. 已完成范围
 - Phase 1A-2：Sample NAV import pipeline 已完成。
@@ -40,9 +44,15 @@
 - Baseline snapshot：Phase 1A-5A 合入后、本次文档刷新前，`git status --short` 为 clean。
 - 非阻塞本地说明：`git status --ignored` 对 `data/mode-test/` 和 `data/test-tmp/` 有 Permission denied warning；这是本地 ACL 临时目录问题，不是代码 Gate blocker。
 - 不把本地临时目录清理操作写成项目任务。
+- 当前文档分支已生成 `docs/status.md` 与 `docs/status_updates.log`，用于状态快照与日志记录；如进入提交，应与本次文档状态刷新一起审阅。
+
+## Environment Blockers / 环境阻塞
+- 当前无代码级 environment blocker。
+- `data/mode-test/` 与 `data/test-tmp/` 的 Permission denied warning 属于本地 ACL 临时目录问题，非 Gate blocker。
+- `data/artifacts/`、`data/fdc.sqlite3`、`data/pytest-tmp-safe/` 是 ignored runtime artifacts，不应作为项目任务清理或提交。
 
 ## 6. 当前边界
-- 不新增 API。
+- 不新增 API，除非 Phase 1A-5B task package 明确授权。
 - 不新增持仓层。
 - 不新增 market data。
 - 不新增 PostgreSQL/Alembic。
@@ -62,3 +72,4 @@
 2. API-facing DTO / schema / route boundary 可作为 Phase 1A-5B task package 的子范围处理，不单独拆成 Phase 1A-6。
 3. 可选后续：Phase 1B-0 Holdings Layer Blueprint。
 4. 可选后续：Phase 1A-3B portfolio_metric_daily sample ingestion。
+5. 继续保持 README、docs/technical、CLAUDE.md、blueprint docs 只引用本文件，不复制 mutable project-status facts。
