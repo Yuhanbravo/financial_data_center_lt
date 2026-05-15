@@ -2,9 +2,22 @@
 
 本文档说明 Phase 1A 的本地验证路径。它不引入新功能，也不定义 service process。
 
-## Local Windows Gate
+## Local Gate
 
-从仓库根目录执行：
+从仓库根目录执行（完整 local gate 要求以上命令全部通过）：
+
+**平台无关命令（macOS / Linux / CI）：**
+
+```bash
+python scripts/init_sqlite.py
+python scripts/import_sample_nav.py
+python scripts/analyze_sample_nav.py
+python scripts/generate_sample_portfolio_report.py
+python scripts/query_sample_portfolio.py
+python -m pytest -q
+```
+
+**Windows 示例（使用项目专属 conda 环境）：**
 
 ```powershell
 D:\miniforge3\envs\data-center-py312\python.exe scripts/init_sqlite.py

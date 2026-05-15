@@ -12,7 +12,7 @@ Financial Data Center LT 是一个轻量化组合层金融数据中心 MVP，当
 
 1. [仓库 README](../README.md)
 2. [当前 handoff / SSOT](HANDOFF.md)
-3. [文档索引](README.md)
+3. 文档索引（本页）
 4. [架构概览](technical/architecture_overview.md)
 5. [Phase 1A 数据流](technical/phase1a_data_flow.md)
 6. [本地运行手册](technical/local_runbook.md)

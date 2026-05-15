@@ -25,8 +25,7 @@
   - 新增 `scripts/query_sample_portfolio.py`：在 sample SQLite workflow 上执行全部查询并输出确定性 stdout。
   - 新增 `tests/test_portfolio_query_smoke.py`：覆盖 unknown 行为、排序确定性、只读保证、row-count 稳定性、`portfolio_metric_daily` untouched、无 pandas/numpy core 依赖。
 
-## 3. Baseline Gate
-当前主线 Phase 1A-5A baseline Gate：
+## 3. Baseline Gate（已通过）
 - `scripts/init_sqlite.py` passed
 - `scripts/import_sample_nav.py` passed
 - `scripts/analyze_sample_nav.py` passed
