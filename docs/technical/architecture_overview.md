@@ -2,18 +2,17 @@
 
 ## 项目定位（Project Positioning）
 
-Financial Data Center LT 是一个轻量化金融数据中心 MVP，当前聚焦组合层（portfolio-level）数据能力。当前实现采用 local-first 路线：Python 3、SQLAlchemy ORM 和 SQLite。
+Financial Data Center LT 是一个轻量化金融数据中心 MVP，聚焦组合层（portfolio-level）数据能力。当前实现采用 local-first 路线：Python 3、SQLAlchemy ORM 和 SQLite。
 
-Phase 1A 的目标是在引入 service layer 或 frontend 之前，先完成组合层基础闭环。
+当前完成状态与下一阶段计划请以 `docs/HANDOFF.md` 为准。本文档只说明相对稳定的技术架构，不作为 parallel status tracker。
 
-## 已完成的 Phase 1A 能力
+## 稳定架构层（Stable Architecture Layers）
 
-- Phase 1A-2：sample NAV import pipeline。
-- Phase 1A-3：Portfolio NAV Analysis MVP。
-- Phase 1A-4：Portfolio NAV Report / Display MVP。
-- Phase 1A-5A：Read-only Query Layer MVP。
-
-下一阶段是 Phase 1A-5B：Read-only FastAPI Adapter MVP。
+- sample NAV import layer：导入 sample portfolio 与 NAV CSV，并写入 SQLite。
+- NAV analysis layer：基于 `nav_daily` 计算组合层 NAV 分析指标。
+- portfolio report layer：组合 import 与 analysis 输出，生成 deterministic Markdown report。
+- read-only query layer：提供 portfolio、NAV、analysis 和 latest batch 的只读结构化查询。
+- future API adapter boundary：未来可通过薄 API adapter 暴露 read-only query layer。
 
 ## 当前模块关系（Module Relationships）
 
@@ -59,7 +58,7 @@ sample CSV
 
 ### 未来 FastAPI Adapter
 
-Phase 1A-5B 应通过薄 FastAPI adapter 暴露现有 read-only query layer。API-facing DTO、schema 和 route boundary 可放在 Phase 1A-5B task package 内处理。
+未来 FastAPI adapter 应复用现有 read-only query layer，并保持薄适配边界。具体 phase、DTO、schema 和 route boundary 范围以对应 task package 与 `docs/HANDOFF.md` 为准。
 
 ## 明确不是（Explicit Non-goals）
 

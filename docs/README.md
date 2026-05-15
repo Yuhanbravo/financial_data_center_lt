@@ -2,20 +2,11 @@
 
 本目录是 `financial_data_center_lt` 的工程文档层（engineering documentation layer）。
 
-## 当前项目状态（Current Project State）
+## 项目状态入口（Current State Entry）
 
 Financial Data Center LT 是一个轻量化组合层金融数据中心 MVP，当前技术路线是 Python、SQLAlchemy ORM 和本地 SQLite。
 
-当前已完成 baseline：
-- Phase 1A-2：sample NAV import pipeline。
-- Phase 1A-3：Portfolio NAV Analysis MVP。
-- Phase 1A-4：Portfolio NAV Report / Display MVP。
-- Phase 1A-5A：Read-only Query Layer MVP。
-
-下一阶段：
-- Phase 1A-5B：Read-only FastAPI Adapter MVP。
-
-`docs/HANDOFF.md` 仍是 current project state 的 SSOT（Single Source of Truth）。本文档只做导航，不是第二份状态事实源。
+当前项目状态、已完成阶段与下一步计划请以 `docs/HANDOFF.md` 为准。`docs/HANDOFF.md` 仍是 current project state 的 SSOT（Single Source of Truth）。本文档只做导航，不是第二份状态事实源。
 
 ## 推荐阅读顺序（Reading Path）
 
