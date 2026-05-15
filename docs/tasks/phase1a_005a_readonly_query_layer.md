@@ -198,3 +198,7 @@ Execution report 必须包含：
 - 确认 `portfolio_metric_daily` 保持 untouched。
 - 确认未引入 schema、FastAPI/frontend、holdings、market data、PostgreSQL/Alembic 或 real-data scope。
 - Deviations / known limitations；如无，写 `None`。
+
+## 14) implementation status
+- Implemented on branch as bounded execution: query module + runner script + smoke tests + handoff update.
+- Status: completed in branch, pending merge.

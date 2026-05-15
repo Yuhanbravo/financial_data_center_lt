@@ -48,3 +48,18 @@
 1. Phase 1A-5：Read-only Query Interface MVP。
 2. 可选：Phase 1B-0 Holdings Layer Blueprint。
 3. 可选：Phase 1A-3B portfolio_metric_daily sample ingestion。
+
+
+## 8. Phase 1A-5A 状态（pending merge）
+- Phase 1A-5A（Read-only Query Layer MVP）已在当前分支实现，待合并。
+- 新增 `src/fdc/portfolio/query.py`：提供 list/summarize/nav-series/nav-analysis/latest-batch 五类只读结构化查询。
+- 新增 `scripts/query_sample_portfolio.py`：在 sample SQLite workflow 上执行全部查询并输出确定性 stdout。
+- 新增 `tests/test_portfolio_query_smoke.py`：覆盖 unknown 行为、排序确定性、只读保证、row-count 稳定性、`portfolio_metric_daily` untouched、无 pandas/numpy core 依赖。
+- Cloud validation 命令：
+  - `python scripts/init_sqlite.py`
+  - `python scripts/import_sample_nav.py`
+  - `python scripts/analyze_sample_nav.py`
+  - `python scripts/generate_sample_portfolio_report.py`
+  - `python scripts/query_sample_portfolio.py`
+  - `python -m pytest -q`
+- 下一步建议：进入 Phase 1A-6（在不扩展 schema 的前提下，定义 API-facing DTO mapping 设计稿），而非重复执行 1A-5A。
