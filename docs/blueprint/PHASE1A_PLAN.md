@@ -8,7 +8,7 @@
 - 净值日表（nav_daily）
 - 组合级指标日表（portfolio_metric_daily）
 
-Baseline status（2026-05-14）：Phase 1A-2 sample NAV import pipeline、Phase 1A-3 Portfolio NAV Analysis MVP、Phase 1A-4 Portfolio NAV Report / Display MVP 均已完成并合入 `main`。
+Baseline status（2026-05-15）：Phase 1A-2 sample NAV import pipeline、Phase 1A-3 Portfolio NAV Analysis MVP、Phase 1A-4 Portfolio NAV Report / Display MVP、Phase 1A-5A Read-only Query Layer MVP 均已完成并合入 `main`。当前状态以 `docs/HANDOFF.md` 为准。
 
 ## 2. In Scope
 1. repo 目录骨架初始化
@@ -16,7 +16,7 @@ Baseline status（2026-05-14）：Phase 1A-2 sample NAV import pipeline、Phase 
 3. SQLite 会话与初始化脚本
 4. schema smoke tests
 5. 文档与任务包落盘
-6. Phase 1A-2 / 1A-3 / 1A-4 已完成能力记录（样例 NAV 装载、校验、issue log、组合 NAV 分析、组合报告展示）
+6. Phase 1A-2 / 1A-3 / 1A-4 / 1A-5A 已完成能力记录（样例 NAV 装载、校验、issue log、组合 NAV 分析、组合报告展示、只读查询层）
 
 ## 3. Out of Scope
 - 持仓层/交易层/标的层建模
@@ -57,7 +57,8 @@ Baseline status（2026-05-14）：Phase 1A-2 sample NAV import pipeline、Phase 
 - Phase 1A-2：样例 NAV 装载 + 基础校验 + issue log 写入（已完成）
 - Phase 1A-3：Portfolio NAV Analysis MVP（已完成）
 - Phase 1A-4：Portfolio NAV Report / Display MVP（已完成）
-- Phase 1A-5：Read-only Query Interface MVP（推荐下一步）
+- Phase 1A-5A：Read-only Query Layer MVP（已完成）
+- Phase 1A-5B：Read-only FastAPI Adapter MVP（推荐下一步）
 
 ## 6. 交付物
 - 可运行 SQLite 初始化脚本
@@ -77,8 +78,9 @@ Baseline status（2026-05-14）：Phase 1A-2 sample NAV import pipeline、Phase 
   - Phase 1A-2：样例 NAV ingest（仅 sample 数据）、数据校验与 issue log 写入
   - Phase 1A-3：组合 NAV 分析 MVP
   - Phase 1A-4：组合 NAV 报告 / 展示 MVP
+  - Phase 1A-5A：只读查询层 MVP
 - **Phase 1A 推荐下一步**：
-  - Phase 1A-5：Read-only Query Interface MVP
+  - Phase 1A-5B：Read-only FastAPI Adapter MVP
 - **Phase 1B（下一阶段）**：
   - 扩展到 holdings / positions / trades / instruments
   - 不把组合层 ingest 任务挪到 1B
