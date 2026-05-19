@@ -1,6 +1,7 @@
 # HANDOFF（SSOT）
 
 ## Update Log
+- 2026-05-19：Phase 1A-5B（Read-only FastAPI Adapter MVP）已在 cloud 环境实现，状态为 implemented / pending merge；cloud validation 因依赖安装网络限制未完整执行，Local Windows Gate 未在 cloud 验证，待用户本地执行。
 - 2026-05-15：使用 `chatgpt-handoff-pilot` 增量刷新 handoff 主文档；确认 `docs/HANDOFF.md` 仍为 current project state SSOT，纳入 `docs/status.md` / `docs/status_updates.log` 作为 snapshot/log 输出，补充环境阻塞说明，并保持下一步指向 Phase 1A-5B。Environment blockers：无代码级阻塞；本地 ACL warning 仍为非阻塞说明。
 
 ## 1. 当前状态
@@ -67,8 +68,12 @@
 - 文件治理规则：`docs/technical/file_governance.md`
 
 ## 8. 下一步建议
-1. Phase 1A-5B：Read-only FastAPI Adapter MVP。
-2. API-facing DTO / schema / route boundary 可作为 Phase 1A-5B task package 的子范围处理，不单独拆成 Phase 1A-6。
-3. 可选后续：Phase 1B-0 Holdings Layer Blueprint。
-4. 可选后续：Phase 1A-3B portfolio_metric_daily sample ingestion。
-5. 继续保持 README、docs/technical、CLAUDE.md、blueprint docs 只引用本文件，不复制 mutable project-status facts。
+1. 可选后续：Phase 1B-0 Holdings Layer Blueprint。
+2. 可选后续：Phase 1A-3B portfolio_metric_daily sample ingestion。
+3. 继续保持 README、docs/technical、CLAUDE.md、blueprint docs 只引用本文件，不复制 mutable project-status facts。
+
+## 9. Phase 1A-5B Cloud Validation
+- 状态：implemented / pending merge
+- Cloud 命令链：`python scripts/init_sqlite.py`、`python scripts/import_sample_nav.py`、`python scripts/analyze_sample_nav.py`、`python scripts/generate_sample_portfolio_report.py`、`python scripts/query_sample_portfolio.py`、`python -m py_compile ...`、`python scripts/run_api_smoke.py`、`python -m pytest -q`
+- 结果：cloud 侧未完整通过；依赖安装步骤 `python -m pip install fastapi httpx` 因 403 网络限制失败，后续命令链待可联网环境验证。
+- Local Windows Gate：not verified in cloud; pending user validation。
