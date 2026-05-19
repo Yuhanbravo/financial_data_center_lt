@@ -5,10 +5,10 @@
 - 2026-05-15：使用 `chatgpt-handoff-pilot` 增量刷新 handoff 主文档；确认 `docs/HANDOFF.md` 仍为 current project state SSOT，纳入 `docs/status.md` / `docs/status_updates.log` 作为 snapshot/log 输出，补充环境阻塞说明，并保持下一步指向 Phase 1A-5B。Environment blockers：无代码级阻塞；本地 ACL warning 仍为非阻塞说明。
 
 ## 1. 当前状态
-- 日期：2026-05-15
+- 日期：2026-05-19
 - 目标主线：`main`
-- 状态：Phase 1A-5A completed baseline / technical onboarding and status snapshot refresh
-- 结论：Phase 1A-2、Phase 1A-3、Phase 1A-4、Phase 1A-5A 均已完成并合入主线；当前下一阶段为 Phase 1A-5B：Read-only FastAPI Adapter MVP。
+- 状态：Phase 1A-5B implemented / pending merge
+- 结论：Phase 1A-2、Phase 1A-3、Phase 1A-4、Phase 1A-5A 均已完成并合入主线；Phase 1A-5B 已完成实现并处于 pending merge。
 - 状态文档：`docs/status.md` 是 `update-project-status` 生成的 snapshot；`docs/status_updates.log` 是状态更新日志。二者不替代本文件的 SSOT 角色。
 
 ## 2. 已完成范围
