@@ -1,0 +1,7 @@
+[project]
+name = "financial-data-center-lt"
+version = "0.0.0"
+dependencies = [
+  "fastapi",
+  "httpx",
+]
